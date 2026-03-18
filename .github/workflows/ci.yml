@@ -1,4 +1,4 @@
-name: Node.js CI Pipeline
+name: MERN CI Pipeline
 
 on:
   push:
@@ -10,17 +10,35 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
 
+    services:
+      mongodb:
+        image: mongo:6
+        ports:
+          - 27017:27017
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      # ---------------- BACKEND ----------------
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install Dependencies
+      - name: Install Backend
+        working-directory: server
         run: npm install
 
-      - name: Run Tests
+      - name: Test Backend
+        working-directory: server
         run: npm test
+
+      # ---------------- FRONTEND ----------------
+      - name: Install Frontend
+        working-directory: client
+        run: npm install
+
+      - name: Build Frontend
+        working-directory: client
+        run: npm run build
