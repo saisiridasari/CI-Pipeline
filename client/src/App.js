@@ -39,7 +39,7 @@ function App() {
         <h2>Backend Status</h2>
         {data ? (
           <p style={styles.success}>
-            ✅ {data.message}
+             {data.message}
           </p>
         ) : (
           <p>Loading...</p>
